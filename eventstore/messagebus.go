@@ -1,6 +1,9 @@
 package eventstore
 
-import "sync"
+import (
+	"github.com/zibilal/skeletones/logger"
+	"sync"
+)
 
 type MessageBus struct {
 	EventBus chan Event
@@ -22,23 +25,18 @@ func (b *MessageBus) SetBus(ch chan Event) {
 	b.EventBus = ch
 }
 
-func (b *MessageBus) Input() chan <- Event {
+func (b *MessageBus) Input() chan<- Event {
 	return b.EventBus
 }
 
-func (b *MessageBus) HandlingBus() error {
-	var er chan error
+func (b *MessageBus) HandlingBus() {
 	go func() {
-		for ; b.CanRun; {
-			evn := <- b.EventBus
-			if err:= evn.Handle();err != nil {
-				 er <- err
+		for b.CanRun {
+			evn := <-b.EventBus
+			if err := evn.Handle(); err != nil {
+				logger.Info("failed handling", evn.String(), "caused", err.Error())
 				return
 			}
 		}
-
-		er <- nil
 	}()
-
-	return <- er
 }

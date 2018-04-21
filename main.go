@@ -1,7 +1,7 @@
 package main
 
-import "fmt"
+import "github.com/zibilal/skeletones/logger"
 
 func main() {
-	fmt.Println("POC")
+	logger.Info("Starting...")
 }

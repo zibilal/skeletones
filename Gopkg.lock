@@ -7,9 +7,30 @@
   revision = "f58768cc1a7a7e77a3bd49e98cdd21419399b6a3"
   version = "v1.2.0"
 
+[[projects]]
+  name = "github.com/sirupsen/logrus"
+  packages = ["."]
+  revision = "c155da19408a8799da419ed3eeb0cb5db0ad5dbc"
+  version = "v1.0.5"
+
+[[projects]]
+  branch = "master"
+  name = "golang.org/x/crypto"
+  packages = ["ssh/terminal"]
+  revision = "e73bf333ef8920dbb52ad18d4bd38ad9d9bc76d7"
+
+[[projects]]
+  branch = "master"
+  name = "golang.org/x/sys"
+  packages = [
+    "unix",
+    "windows"
+  ]
+  revision = "79b0c6888797020a994db17c8510466c72fe75d9"
+
 [solve-meta]
   analyzer-name = "dep"
   analyzer-version = 1
-  inputs-digest = "e34151ee34ca3b36f1e58ff0eedfdeaab932df9d0bad56924b668c296e8e1163"
+  inputs-digest = "226c28cebe5022813338e279248871e3c28f1d102e3daaf881859304af99cbd9"
   solver-name = "gps-cdcl"
   solver-version = 1

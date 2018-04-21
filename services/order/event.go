@@ -2,6 +2,7 @@ package order
 
 import (
 	"github.com/zibilal/skeletones/uuid"
+	"github.com/zibilal/skeletones/logger"
 )
 
 type OrderPlacedEvent struct {
@@ -32,5 +33,7 @@ func (e *OrderPlacedEvent) GetID() uuid.ID {
 }
 
 func (e *OrderPlacedEvent) Handle() error {
+	logger.Info("[Order Placed] Handle saving to write db")
+	logger.Info("[Order Placed] Other things")
 	return nil
 }

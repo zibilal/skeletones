@@ -3,7 +3,10 @@ package eventstore
 import (
 	"testing"
 	"github.com/zibilal/skeletones/uuid"
+	"errors"
+	"github.com/zibilal/skeletones/logger"
 	"fmt"
+	"time"
 )
 
 const (
@@ -30,7 +33,11 @@ func (e *EventTest) String() string {
 }
 
 func (e *EventTest) Handle() error {
-	fmt.Printf("\tHandling event %s, item %v", e.Name, e.Item)
+	logger.Info(fmt.Sprintf("\tHandling event %s, item %v\n", e.Name, e.Item))
+
+	if e.Name == "Ev3" {
+		return errors.New("the event name cannot be Ev3")
+	}
 
 	return nil
 }
@@ -53,10 +60,20 @@ func TestGetMessageBus(t *testing.T) {
 		ev3.Name = "Ev3"
 		ev3.SetID(uuid.GenerateID())
 
-		bus.Input() <- ev1
-		bus.Input() <- ev2
-		bus.Input() <- ev3
+		go func() {
+			bus.Input() <- ev1
+			bus.Input() <- ev2
+			bus.Input() <- ev3
+		}()
 
-		t.Log("Ends")
+		go func() {
+			bus.HandlingBus()
+		}()
+
+		time.Sleep(1 * time.Second)
+
+		logger.Info("Starts")
+
+		t.Log("Unit test ends")
 	}
 }

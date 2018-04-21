@@ -20,11 +20,10 @@ type PlaceOrderCommand struct {
 	EventBuilder eventstore.EventBuilder
 }
 
-func NewPlaceOrderCommand(order Order, eventBuilder eventstore.EventBuilder) *PlaceOrderCommand {
+func NewPlaceOrderCommand(eventBuilder eventstore.EventBuilder) *PlaceOrderCommand {
 	placeOrder := new(PlaceOrderCommand)
 	placeOrder.Status = "Placing Order"
 	placeOrder.Timeplacement = time.Now()
-	placeOrder.Order = order
 	placeOrder.AggregateId = uuid.GenerateID()
 	placeOrder.EventBuilder = eventBuilder
 	return placeOrder
@@ -94,12 +93,13 @@ func (c *PlaceOrderCommand) Handle(payload eventstore.Payloader, aggregateId uui
 	if !found {
 		return fmt.Errorf("expected type Order, got %T", payload)
 	}
+	c.Order = ord
 
 	// Place order is create and event and aggregate
 	evn, err := c.EventBuilder.SetName("order_placed").
 		SetAggregateID(aggregateId).
-			GenID().
-				SetItem(ord).Build()
+		GenID().
+		SetItem(ord).Build()
 
 	if err != nil {
 		return err
@@ -107,8 +107,10 @@ func (c *PlaceOrderCommand) Handle(payload eventstore.Payloader, aggregateId uui
 
 	// put the event
 
-	msgBus := eventstore.GetMessageBus()
-	msgBus.Input() <- evn
+	go func() {
+		msgBus := eventstore.GetMessageBus()
+		msgBus.Input() <- evn
+	}()
 
 	return nil
 
@@ -140,7 +142,7 @@ type Variant struct {
 
 type ProductVariant struct {
 	Sku       string
-	ProductId int
+	Product   Product
 	VariantId int
 	Variant
 	Price float64
