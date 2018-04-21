@@ -5,9 +5,10 @@ import (
 )
 
 type OrderPlacedEvent struct {
-	Name  string
-	Order Order
-	ID    uuid.ID
+	Name        string
+	Order       Order
+	ID          uuid.ID
+	AggregateID uuid.ID
 }
 
 func NewOrderPlacedEvent(id uuid.ID, name string) *OrderPlacedEvent {
@@ -28,4 +29,8 @@ func (e *OrderPlacedEvent) SetID(id uuid.ID) {
 
 func (e *OrderPlacedEvent) GetID() uuid.ID {
 	return e.ID
+}
+
+func (e *OrderPlacedEvent) Handle() error {
+	return nil
 }
