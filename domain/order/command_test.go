@@ -6,6 +6,7 @@ import (
 	"github.com/zibilal/skeletones/eventstore"
 	"time"
 	"github.com/zibilal/skeletones/logger"
+	"github.com/zibilal/skeletones/persistence/inmemorypersistence"
 )
 
 func TestNewPlaceOrderCommand(t *testing.T) {
@@ -20,7 +21,7 @@ func TestNewPlaceOrderCommand(t *testing.T) {
 		}
 
 		orderEventBuilder := NewOrderEventBuilder()
-		cmd := NewPlaceOrderCommand(orderEventBuilder)
+		cmd := NewPlaceOrderCommand(orderEventBuilder, inmemorypersistence.NewInMemoryStore())
 		err := cmd.Handle(orderTest, uuid.GenerateID(), 0)
 		if err != nil {
 			t.Errorf("%s expected error nil, got %s", failed, err.Error())

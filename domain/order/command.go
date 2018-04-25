@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"github.com/zibilal/skeletones/eventstore"
+	"github.com/zibilal/skeletones/persistence"
 	"github.com/zibilal/skeletones/uuid"
 	"time"
 )
@@ -17,15 +18,17 @@ type PlaceOrderCommand struct {
 	Status       string
 	AggregateId  uuid.ID
 	Order        Order
+	Storer       persistence.Storer
 	EventBuilder eventstore.EventBuilder
 }
 
-func NewPlaceOrderCommand(eventBuilder eventstore.EventBuilder) *PlaceOrderCommand {
+func NewPlaceOrderCommand(eventBuilder eventstore.EventBuilder, storer persistence.Storer) *PlaceOrderCommand {
 	placeOrder := new(PlaceOrderCommand)
 	placeOrder.Status = "Placing Order"
 	placeOrder.Timeplacement = time.Now()
 	placeOrder.AggregateId = uuid.GenerateID()
 	placeOrder.EventBuilder = eventBuilder
+	placeOrder.Storer = storer
 	return placeOrder
 }
 
@@ -34,6 +37,7 @@ type OrderEventBuilder struct {
 	AggregateID uuid.ID
 	Name        string
 	Item        Order
+	Storer      persistence.Storer
 
 	itemTmp interface{}
 }
@@ -66,6 +70,11 @@ func (b *OrderEventBuilder) SetName(name string) eventstore.EventBuilder {
 	return b
 }
 
+func (b *OrderEventBuilder) SetStorer(storer persistence.Storer) eventstore.EventBuilder {
+	b.Storer = storer
+	return b
+}
+
 func (b *OrderEventBuilder) Build() (eventstore.Event, error) {
 	if b.itemTmp != nil {
 		switch b.itemTmp.(type) {
@@ -81,6 +90,7 @@ func (b *OrderEventBuilder) Build() (eventstore.Event, error) {
 		AggregateID: b.AggregateID,
 		Name:        b.Name,
 		Order:       b.Item,
+		Store:       b.Storer,
 	}
 
 	return orderPlaced, nil
@@ -99,7 +109,8 @@ func (c *PlaceOrderCommand) Handle(payload eventstore.Payloader, aggregateId uui
 	evn, err := c.EventBuilder.SetName("order_placed").
 		SetAggregateID(aggregateId).
 		GenID().
-		SetItem(ord).Build()
+		SetItem(ord).
+		SetStorer(c.Storer).Build()
 
 	if err != nil {
 		return err

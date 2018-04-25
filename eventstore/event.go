@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"github.com/zibilal/skeletones/uuid"
 	"sync"
+	"github.com/zibilal/skeletones/persistence"
 )
 
 // Event interface is base type for an event
@@ -44,6 +45,7 @@ type EventBuilder interface {
 	// for maintenance reason, name of the event is being set
 	// by the outside system
 	SetName(string) EventBuilder
+	SetStorer(storer persistence.Storer) EventBuilder
 	// Build the event
 	Build() (Event, error)
 }

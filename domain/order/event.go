@@ -1,8 +1,9 @@
 package order
 
 import (
-	"github.com/zibilal/skeletones/uuid"
 	"github.com/zibilal/skeletones/logger"
+	"github.com/zibilal/skeletones/persistence"
+	"github.com/zibilal/skeletones/uuid"
 )
 
 type OrderPlacedEvent struct {
@@ -10,12 +11,14 @@ type OrderPlacedEvent struct {
 	Order       Order
 	ID          uuid.ID
 	AggregateID uuid.ID
+	Store       persistence.Storer
 }
 
-func NewOrderPlacedEvent(id uuid.ID, name string) *OrderPlacedEvent {
+func NewOrderPlacedEvent(id uuid.ID, name string, s persistence.Storer) *OrderPlacedEvent {
 	o := new(OrderPlacedEvent)
 	o.Name = name
 	o.ID = id
+	o.Store = s
 
 	return o
 }
@@ -35,5 +38,7 @@ func (e *OrderPlacedEvent) GetID() uuid.ID {
 func (e *OrderPlacedEvent) Handle() error {
 	logger.Info("[Order Placed] Handle saving to write db")
 	logger.Info("[Order Placed] Other things")
-	return nil
+
+	// store the event
+	return e.Store.Store(e.AggregateID, e)
 }
