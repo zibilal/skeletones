@@ -1,9 +1,9 @@
 package apitest
 
 import (
+	"fmt"
 	"github.com/julienschmidt/httprouter"
 	"net/http"
-	"fmt"
 )
 
 func ListOrders(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
