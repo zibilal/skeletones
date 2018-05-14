@@ -1,9 +1,9 @@
 package inmemorypersistence
 
 import (
+	"fmt"
 	"github.com/zibilal/skeletones/uuid"
 	"sync"
-	"fmt"
 )
 
 type InMemoryStore struct {

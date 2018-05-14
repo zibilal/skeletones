@@ -2,9 +2,9 @@ package eventstore
 
 import (
 	"fmt"
+	"github.com/zibilal/skeletones/persistence"
 	"github.com/zibilal/skeletones/uuid"
 	"sync"
-	"github.com/zibilal/skeletones/persistence"
 )
 
 // Event interface is base type for an event
@@ -55,7 +55,7 @@ type EventBuilder interface {
 // in this event collection
 type EventCollection struct {
 	Collection map[string]Event
-	Lock sync.Mutex
+	Lock       sync.Mutex
 }
 
 // NewEventCollection is factory function that generate

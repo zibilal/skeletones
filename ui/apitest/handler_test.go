@@ -3,8 +3,8 @@ package apitest
 import (
 	"github.com/julienschmidt/httprouter"
 	"net/http"
-	"testing"
 	"net/http/httptest"
+	"testing"
 )
 
 const (

@@ -1,11 +1,11 @@
 package logger
 
 import (
+	"fmt"
 	log "github.com/sirupsen/logrus"
+	"io"
 	"os"
 	"runtime"
-	"fmt"
-	"io"
 )
 
 var isDebug bool
@@ -16,7 +16,7 @@ func init() {
 
 	if os.Getenv("IS_DEBUG") == "" || os.Getenv("IS_DEBUG") == "1" {
 		isDebug = true
-	} else if os.Getenv("IS_DEBUG") == "0"{
+	} else if os.Getenv("IS_DEBUG") == "0" {
 		isDebug = false
 	}
 }

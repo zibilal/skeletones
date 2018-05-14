@@ -1,11 +1,11 @@
 package eventstore
 
 import (
-	"testing"
-	"github.com/zibilal/skeletones/uuid"
 	"errors"
-	"github.com/zibilal/skeletones/logger"
 	"fmt"
+	"github.com/zibilal/skeletones/logger"
+	"github.com/zibilal/skeletones/uuid"
+	"testing"
 	"time"
 )
 
@@ -15,7 +15,7 @@ const (
 )
 
 type EventTest struct {
-	ID uuid.ID
+	ID   uuid.ID
 	Name string
 	Item interface{}
 }

@@ -1,12 +1,12 @@
 package order
 
 import (
-	"testing"
-	"github.com/zibilal/skeletones/uuid"
 	"github.com/zibilal/skeletones/eventstore"
-	"time"
 	"github.com/zibilal/skeletones/logger"
 	"github.com/zibilal/skeletones/persistence/inmemorypersistence"
+	"github.com/zibilal/skeletones/uuid"
+	"testing"
+	"time"
 )
 
 func TestNewPlaceOrderCommand(t *testing.T) {
@@ -14,10 +14,8 @@ func TestNewPlaceOrderCommand(t *testing.T) {
 	{
 		orderTest := Order{
 			OrderId: 1,
-			Status: "OrderPlaced",
-			Items: []ProductVariant {
-
-			},
+			Status:  "OrderPlaced",
+			Items:   []ProductVariant{},
 		}
 
 		orderEventBuilder := NewOrderEventBuilder()

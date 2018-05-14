@@ -1,0 +1,4 @@
+---
+appname: Terracotta
+database:
+  connection: "mongodb://admin:admin@localhost/eventsdb"

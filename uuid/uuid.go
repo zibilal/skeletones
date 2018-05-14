@@ -1,8 +1,8 @@
 package uuid
 
 import (
-	"github.com/satori/go.uuid"
 	"fmt"
+	"github.com/satori/go.uuid"
 )
 
 type ID string

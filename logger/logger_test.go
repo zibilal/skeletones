@@ -1,8 +1,8 @@
 package logger
 
 import (
-	"testing"
 	"os"
+	"testing"
 )
 
 func TestLogger(t *testing.T) {
